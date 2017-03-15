@@ -90,6 +90,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable CAAnimation *)imageAnimationForEmptyDataSet:(UIScrollView *)scrollView;
 
+- (UIButtonType)buttonTypeForEmptyDataSet:(UIScrollView *)scrollView;
+
 /**
  Asks the data source for the title to be used for the specified button state.
  The dataset uses a fixed font style by default, if no attributes are set. If you want a different font style, return a attributed string.

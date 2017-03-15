@@ -35,6 +35,7 @@
 @property (nonatomic, strong) UIView *customView;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
+@property (nonatomic, assign) UIButtonType buttonType;
 @property (nonatomic, assign) CGFloat verticalOffset;
 @property (nonatomic, assign) CGFloat verticalSpace;
 
@@ -213,6 +214,14 @@ static char const * const kEmptyDataSetView =       "emptyDataSetView";
         return color;
     }
     return nil;
+}
+
+- (UIButtonType)dzn_buttonType
+{
+    if (self.emptyDataSetSource && [self.emptyDataSetSource respondsToSelector:@selector(buttonTypeForEmptyDataSet:)]) {
+        return [self.emptyDataSetSource buttonTypeForEmptyDataSet:self];
+    }
+    return UIButtonTypeCustom;
 }
 
 - (NSAttributedString *)dzn_buttonTitleForState:(UIControlState)state
@@ -504,6 +513,7 @@ static char const * const kEmptyDataSetView =       "emptyDataSetView";
             }
             
             // Configure button
+            view.buttonType = [self dzn_buttonType];
             if (buttonImage) {
                 [view.button setImage:buttonImage forState:UIControlStateNormal];
                 [view.button setImage:[self dzn_buttonImageForState:UIControlStateHighlighted] forState:UIControlStateHighlighted];
@@ -825,7 +835,7 @@ Class dzn_baseClassToSwizzleForTarget(id target)
 {
     if (!_button)
     {
-        _button = [UIButton buttonWithType:UIButtonTypeCustom];
+        _button = [UIButton buttonWithType:self.buttonType];
         _button.translatesAutoresizingMaskIntoConstraints = NO;
         _button.backgroundColor = [UIColor clearColor];
         _button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
